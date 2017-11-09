@@ -28,14 +28,14 @@
                 android:paddingRight="@dimen/dp_25"
                 android:gravity="center_vertical"  >
 
-                <com.ncrf.jiege.buscarddz.tools.AlignTextView
+                <com.example.buscardzz.tools.AlignTextView
                     android:id="@+id/left_name"
                     android:layout_width="@dimen/dp_180"
                     android:layout_height="@dimen/dp_30"
                     android:textSize="@dimen/sp_18"
                     app:suffixMode="full_width" />
 
-                <com.ncrf.jiege.buscarddz.tools.AlignTextView
+                <com.example.buscardzz.tools.AlignTextView
                     android:id="@+id/left_name1"
                     android:layout_width="@dimen/dp_180"
                     android:layout_height="@dimen/dp_30"

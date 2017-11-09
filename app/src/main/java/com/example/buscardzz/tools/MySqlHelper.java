@@ -1,4 +1,4 @@
-package com.ncrf.jiege.buscarddz.tools;
+package com.example.buscardzz.tools;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

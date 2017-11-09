@@ -1,24 +1,21 @@
-package com.ncrf.jiege.buscarddz.server;
+package com.example.buscardzz.server;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.ncrf.jiege.buscarddz.MainActivity;
-import com.ncrf.jiege.buscarddz.application.MyApplication;
-import com.ncrf.jiege.buscarddz.tools.MyFunc;
-import com.ncrf.jiege.buscarddz.tools.SqliteUtil;
+import com.example.buscardzz.MainActivity;
+import com.example.buscardzz.application.MyApplication;
+import com.example.buscardzz.tools.MyFunc;
+import com.example.buscardzz.tools.SqliteUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.RandomAccessFile;
 
 import android_serialport_api.SerialPort;
 
@@ -479,28 +476,6 @@ public class SerialPortService extends Service {
         }
         Log.v(TAG, "校验位：" + Integer.toHexString(yhzhi));
         return Integer.toHexString(yhzhi);
-    }
-
-    // 把数据存到txt文件
-    public void writetxt(String str) {
-        // 判断手机上是否存在SD卡并具有读写SD卡权限
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            // 获取SD卡目录
-            try {
-                // 获取目录中的绝对路径+文件名
-                RandomAccessFile raf = new RandomAccessFile(MainActivity.fwyyfile, "rw");
-                // 将文件记录指针，移动到最后
-                raf.seek(MainActivity.fwyyfile.length());
-                // 写入内容
-                raf.write(str.getBytes());
-                raf.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(SerialPortService.this, "未检测到SD卡", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public int getxxz(String msg, String str) {

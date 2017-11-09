@@ -28,7 +28,7 @@
                 android:paddingBottom="@dimen/dp_17"
                 android:paddingTop="@dimen/dp_20" >
 
-                <com.ncrf.jiege.buscarddz.tools.MyTextView
+                <com.example.buscardzz.tools.MyTextView
                     android:id="@+id/shhs_name"
                     android:layout_width="@dimen/dp_25"
                     android:layout_height="match_parent"
@@ -36,7 +36,7 @@
                     android:textColor="#ffffff"
                     android:textSize="@dimen/sp_18" />
 
-                <com.ncrf.jiege.buscarddz.tools.MyTextView
+                <com.example.buscardzz.tools.MyTextView
                     android:id="@+id/shhs_name1"
                     android:layout_width="@dimen/dp_25"
                     android:layout_height="match_parent"

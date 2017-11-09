@@ -1,16 +1,13 @@
-package com.ncrf.jiege.buscarddz;
+package com.example.buscardzz;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +17,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ncrf.jiege.buscarddz.adapter.leftMyAdapter;
-import com.ncrf.jiege.buscarddz.adapter.rightMyAdapter;
-import com.ncrf.jiege.buscarddz.adapter.shangMyAdapter;
-import com.ncrf.jiege.buscarddz.application.MyApplication;
-import com.ncrf.jiege.buscarddz.server.SerialPortService;
-import com.ncrf.jiege.buscarddz.tools.CopyFile;
-import com.ncrf.jiege.buscarddz.tools.GetLineMsg;
-import com.ncrf.jiege.buscarddz.tools.HorizontalListView;
-import com.ncrf.jiege.buscarddz.util.SiteMsg_Util;
+import com.example.buscardzz.adapter.leftMyAdapter;
+import com.example.buscardzz.adapter.rightMyAdapter;
+import com.example.buscardzz.adapter.shangMyAdapter;
+import com.example.buscardzz.application.MyApplication;
+import com.example.buscardzz.server.SerialPortService;
+import com.example.buscardzz.tools.CopyFile;
+import com.example.buscardzz.tools.GetLineMsg;
+import com.example.buscardzz.tools.HorizontalListView;
+import com.example.buscardzz.util.SiteMsg_Util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,7 +34,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.ncrf.jiege.buscarddz.R.id.LineWord;
+import static com.example.buscardzz.R.id.LineWord;
 
 
 public class MainActivity extends Activity {
@@ -55,12 +52,6 @@ public class MainActivity extends Activity {
     ListView mListLeft;
     @BindView(R.id.list_right)
     ListView mListRight;
-    @BindView(R.id.line2)
-    TextView mLine2;
-    @BindView(R.id.minmoney)
-    TextView mMinmoney;
-    @BindView(R.id.maxmoney)
-    TextView mMaxmoney;
     // 系统根路径
     public static String RootPath = Environment.getExternalStorageDirectory().toString();
     // 总路径
@@ -281,19 +272,6 @@ public class MainActivity extends Activity {
             } else {
                 mLineWord.setText(MyApplication.line_util.getLineWord() + "路");
             }
-            if (lineword.equals("B3-A") || (lineword.equals("B3-B"))) {
-                mMoneymsg.setVisibility(View.VISIBLE);
-                mLine2.setText("BRT3");
-                mMinmoney.setText("2元");
-                mMaxmoney.setText("10元");
-            } else if (lineword.equals("B4")) {
-                mMoneymsg.setVisibility(View.VISIBLE);
-                mLine2.setText("BRT4");
-                mMinmoney.setText("2元");
-                mMaxmoney.setText("6元");
-            } else {
-                mMoneymsg.setVisibility(View.GONE);
-            }
 
         }
 
@@ -326,43 +304,7 @@ public class MainActivity extends Activity {
     }
 
     public void SetMoney(View view) {
-        final String[] items = {"BRT3", "BRT4"};
-        yourChoice = 0;
-        AlertDialog.Builder singleChoiceDialog =
-                new AlertDialog.Builder(MainActivity.this);
-        singleChoiceDialog.setTitle("请选择线路");
-        // 第二个参数是默认选项，此处设置为0
-        singleChoiceDialog.setSingleChoiceItems(items, 0,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        yourChoice = which;
-                    }
-                });
-        singleChoiceDialog.setPositiveButton("确定",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (yourChoice) {
-                            case 0:
-                                mLine2.setText("BRT3");
-                                mMinmoney.setText("2元");
-                                mMaxmoney.setText("10元");
-                                break;
-                            case 1:
-                                mLine2.setText("BRT4");
-                                mMinmoney.setText("2元");
-                                mMaxmoney.setText("6元");
-                                break;
-                        }
-                    }
-                });
-        Dialog dialog = singleChoiceDialog.create();
-        dialog.show();
-        //设置大小
-        WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-        layoutParams.y = -100;
-        dialog.getWindow().setAttributes(layoutParams);
+
     }
 
     public void setsxx(int i) {

@@ -1,8 +1,8 @@
-package com.ncrf.jiege.buscarddz.tools;
+package com.example.buscardzz.tools;
 
 import android.content.res.AssetManager;
 
-import com.ncrf.jiege.buscarddz.MainActivity;
+import com.example.buscardzz.MainActivity;
 
 import java.io.File;
 import java.io.FileInputStream;

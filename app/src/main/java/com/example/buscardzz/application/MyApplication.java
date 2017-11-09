@@ -1,4 +1,4 @@
-package com.ncrf.jiege.buscarddz.application;
+package com.example.buscardzz.application;
 
 import android.app.Application;
 import android.content.Context;
@@ -7,11 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ncrf.jiege.buscarddz.MainActivity;
-import com.ncrf.jiege.buscarddz.tools.AppManager;
-import com.ncrf.jiege.buscarddz.tools.MySqlHelper;
-import com.ncrf.jiege.buscarddz.util.LineMsg_Util;
-import com.ncrf.jiege.buscarddz.util.SiteMsg_Util;
+import com.example.buscardzz.MainActivity;
+import com.example.buscardzz.tools.AppManager;
+import com.example.buscardzz.tools.MySqlHelper;
+import com.example.buscardzz.util.LineMsg_Util;
+import com.example.buscardzz.util.SiteMsg_Util;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,7 +53,7 @@ public class MyApplication extends Application {
      * true  视新 M350
      */
     public static boolean BOOTTYPE = false;
-    public static int baudrate = 19200;
+    public static int baudrate = 9600;
     public static String device;
     public static float weight;
 
@@ -112,7 +112,6 @@ public class MyApplication extends Application {
         }
     }
 
-    ;
 
 
     /**
@@ -158,10 +157,5 @@ public class MyApplication extends Application {
         return null;
     }
 
-    // ------------------------------activity管理-----------------------//
-
-
-    // 结束线程,一般与finishAllActivity()一起使用
-    // 例如: finishAllActivity;finishProgram();
 
 }

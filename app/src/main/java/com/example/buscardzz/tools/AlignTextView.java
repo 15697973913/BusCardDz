@@ -1,4 +1,4 @@
-package com.ncrf.jiege.buscarddz.tools;
+package com.example.buscardzz.tools;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.ncrf.jiege.buscarddz.R;
+import com.example.buscardzz.R;
 
 
 /**

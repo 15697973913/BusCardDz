@@ -1,4 +1,4 @@
-package com.ncrf.jiege.buscarddz.tools;
+package com.example.buscardzz.tools;
 
 /**
  * Created by Administrator on 2017/11/7 0007.

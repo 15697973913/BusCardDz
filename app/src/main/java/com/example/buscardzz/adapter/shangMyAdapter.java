@@ -1,4 +1,4 @@
-package com.ncrf.jiege.buscarddz.adapter;
+package com.example.buscardzz.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,9 +11,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 
-import com.ncrf.jiege.buscarddz.R;
-import com.ncrf.jiege.buscarddz.tools.MyTextView;
-import com.ncrf.jiege.buscarddz.util.SiteMsg_Util;
+import com.example.buscardzz.R;
+import com.example.buscardzz.tools.MyTextView;
+import com.example.buscardzz.util.SiteMsg_Util;
 
 import java.util.ArrayList;
 import java.util.List;

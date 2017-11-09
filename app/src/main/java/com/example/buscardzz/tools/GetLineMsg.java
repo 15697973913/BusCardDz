@@ -1,12 +1,12 @@
-package com.ncrf.jiege.buscarddz.tools;
+package com.example.buscardzz.tools;
 
 import android.os.Environment;
 import android.util.Log;
 
-import com.ncrf.jiege.buscarddz.MainActivity;
-import com.ncrf.jiege.buscarddz.application.MyApplication;
-import com.ncrf.jiege.buscarddz.util.LineMsg_Util;
-import com.ncrf.jiege.buscarddz.util.SiteMsg_Util;
+import com.example.buscardzz.MainActivity;
+import com.example.buscardzz.application.MyApplication;
+import com.example.buscardzz.util.LineMsg_Util;
+import com.example.buscardzz.util.SiteMsg_Util;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

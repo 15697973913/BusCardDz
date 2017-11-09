@@ -1,4 +1,4 @@
-package com.ncrf.jiege.buscarddz.server;
+package com.example.buscardzz.server;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -10,10 +10,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.ncrf.jiege.buscarddz.MainActivity;
-import com.ncrf.jiege.buscarddz.application.MyApplication;
-import com.ncrf.jiege.buscarddz.tools.CopyFile;
-import com.ncrf.jiege.buscarddz.tools.GetLineMsg;
+import com.example.buscardzz.MainActivity;
+import com.example.buscardzz.application.MyApplication;
+import com.example.buscardzz.tools.CopyFile;
+import com.example.buscardzz.tools.GetLineMsg;
 
 import java.io.File;
 
@@ -32,6 +32,7 @@ public class AutoStartBroadcastService extends Service {
 		private boolean ishavasd;
 		private Context context;
 		public String sdPath;
+		private int times;
 		public void onReceive(Context context, Intent intent) {
 			Log.v(TAG, "ACTION:" + ACTION);
 			if (intent.getAction().equals(ACTION) || intent.getAction().equals(MOUNTED) || intent.getAction().equals(UNMOUNTED)) {
@@ -42,6 +43,7 @@ public class AutoStartBroadcastService extends Service {
 				}
 			}
 			if (intent.getAction().equals(MOUNTED)) {
+				times=0;
 				sdPath = intent.getData().getPath();
 				Log.v(TAG, "U盘路径为：" + sdPath);
 
@@ -64,13 +66,17 @@ public class AutoStartBroadcastService extends Service {
 						File file = new File(USBPATH);
 						Log.v(TAG, "file:" + USBPATH);
 						if (file == null) {
+							if (times>10){
+								return;
+							}
+							times++;
 							handler.sendEmptyMessageDelayed(0x6151, 5000);
 							return;
 						}
 						ishavasd = file.exists();
 						Log.v(TAG, "ishavasd:" + ishavasd);
-						String sdapkpath = USBPATH + "/Apk/BusCardXiAn.apk";
-						String bdapkpath = BENDIPATH + "/Apk/BusCardXiAn.apk";
+						String sdapkpath = USBPATH + "/Apk/BusCardDz.apk";
+						String bdapkpath = BENDIPATH + "/Apk/BusCardDz.apk";
 						File filejia = new File(BENDIPATH + "/Apk");
 						if (!filejia.exists()) {
 							filejia.mkdirs();
@@ -113,13 +119,17 @@ public class AutoStartBroadcastService extends Service {
 						File file1 = new File(USBPATH);
 						Log.v(TAG, "file:" + USBPATH);
 						if (file1 == null) {
+							if (times>10){
+								return;
+							}
+							times++;
 							handler.sendEmptyMessageDelayed(0x6151, 5000);
 							return;
 						}
 						ishavasd = file1.exists();
 						Log.v(TAG, "ishavasd:" + ishavasd);
-						String sdapkpath1 = USBPATH + "/Apk/BusCardXiAn.apk";
-						String bdapkpath1 = BENDIPATH + "/Apk/BusCardXiAn.apk";
+						String sdapkpath1 = USBPATH + "/Apk/BusCardDz.apk";
+						String bdapkpath1 = BENDIPATH + "/Apk/BusCardDz.apk";
 						File filejia1 = new File(BENDIPATH + "/Apk");
 						if (!filejia1.exists()) {
 							filejia1.mkdirs();

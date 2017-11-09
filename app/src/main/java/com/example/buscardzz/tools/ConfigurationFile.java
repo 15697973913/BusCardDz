@@ -1,4 +1,4 @@
-package com.ncrf.jiege.buscarddz.tools;
+package com.example.buscardzz.tools;
 
 /*
  * ConfigurationFile.java
@@ -11,7 +11,7 @@ package com.ncrf.jiege.buscarddz.tools;
 
 import android.util.Log;
 
-import com.ncrf.jiege.buscarddz.util.SiteMsg_Util;
+import com.example.buscardzz.util.SiteMsg_Util;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

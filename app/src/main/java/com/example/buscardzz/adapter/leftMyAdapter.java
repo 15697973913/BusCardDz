@@ -1,9 +1,10 @@
-package com.ncrf.jiege.buscarddz.adapter;
+package com.example.buscardzz.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.text.TextPaint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 
-import com.ncrf.jiege.buscarddz.R;
-import com.ncrf.jiege.buscarddz.tools.AlignTextView;
-import com.ncrf.jiege.buscarddz.util.SiteMsg_Util;
+import com.example.buscardzz.R;
+import com.example.buscardzz.tools.AlignTextView;
+import com.example.buscardzz.util.SiteMsg_Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class rightMyAdapter extends BaseAdapter {
+
+public class leftMyAdapter extends BaseAdapter {
 	private List<SiteMsg_Util> list = new ArrayList<SiteMsg_Util>();
 	private LayoutInflater inflater;
 	private Context context;
@@ -30,7 +32,7 @@ public class rightMyAdapter extends BaseAdapter {
 	private ImageView dqimg;
 	private int isdz;
 
-	public rightMyAdapter(List<SiteMsg_Util> list, Context context, int index, int isdz) {
+	public leftMyAdapter(List<SiteMsg_Util> list, Context context, int index, int isdz) {
 		this.list = list;
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
@@ -57,11 +59,11 @@ public class rightMyAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int arg0, View view, ViewGroup arg2) {
-		view = inflater.inflate(R.layout.right_list_item, null);
-		zdname = view.findViewById(R.id.right_name);
-		zdname1 = view.findViewById(R.id.right_name1);
-		img = view.findViewById(R.id.right_stype_img);
-		layout = view.findViewById(R.id.right_szdbuju);
+		view = inflater.inflate(R.layout.left_list_item, null);
+		zdname = view.findViewById(R.id.left_name);
+		zdname1 = view.findViewById(R.id.left_name1);
+		img = view.findViewById(R.id.left_stype_img);
+		layout = view.findViewById(R.id.left_szdbuju);
 		LayoutParams lp;
 		lp = (LayoutParams) layout.getLayoutParams();
 		lp.height = context.getResources().getDimensionPixelOffset(R.dimen.dp_355) / list.size();
@@ -163,11 +165,11 @@ public class rightMyAdapter extends BaseAdapter {
 		TextPaint tp1 = zdname1.getPaint();
 		tp1.setFakeBoldText(true);
 		if (arg0 < index) {
-			img.setImageResource(R.mipmap.heise_yuan);
+			img.setImageResource(R.mipmap.bs_yuan);
 			zdname.setTextColor(Color.parseColor("#ffffff"));
 			zdname1.setTextColor(Color.parseColor("#ffffff"));
-
 		} else if (arg0 == index) {
+			Log.v("MyAdapter", "isdz:"+isdz);
 			if (isdz == 1) {
 				img.setImageResource(R.mipmap.hs_yuan);
 				zdname.setTextColor(Color.parseColor("#ffffff"));
@@ -179,7 +181,7 @@ public class rightMyAdapter extends BaseAdapter {
 				zdname1.setTextColor(Color.parseColor("#ffffff"));
 			}
 		} else {
-			img.setImageResource(R.mipmap.bs_yuan);
+			img.setImageResource(R.mipmap.heise_yuan);
 			zdname.setTextColor(Color.parseColor("#ffffff"));
 			zdname1.setTextColor(Color.parseColor("#ffffff"));
 		}

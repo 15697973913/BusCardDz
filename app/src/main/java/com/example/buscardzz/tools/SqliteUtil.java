@@ -1,16 +1,16 @@
-package com.ncrf.jiege.buscarddz.tools;
+package com.example.buscardzz.tools;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.ncrf.jiege.buscarddz.util.LineMsg_Util;
-import com.ncrf.jiege.buscarddz.util.SiteMsg_Util;
+import com.example.buscardzz.util.LineMsg_Util;
+import com.example.buscardzz.util.SiteMsg_Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ncrf.jiege.buscarddz.application.MyApplication.db;
+import static com.example.buscardzz.application.MyApplication.db;
 
 
 public class SqliteUtil {
