@@ -1,5 +1,6 @@
 package com.example.buscardzz;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +40,7 @@ import static com.example.buscardzz.R.id.LineWord;
 
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
+    @SuppressLint("StaticFieldLeak")
     public static Context context;
     @BindView(LineWord)
     TextView mLineWord;
@@ -65,7 +67,6 @@ public class MainActivity extends Activity {
     public static File fwyyfile = new File(ConfigureFilePath + "fwyy.txt");
     public boolean ishavemsg = true;
     public int ishave = 0;
-    public int yourChoice;
     public SharedPreferences sha;
     public boolean isOneStart = false;
     @BindView(R.id.moneymsg)
@@ -125,7 +126,6 @@ public class MainActivity extends Activity {
                 handler.sendEmptyMessage(0x2153);
             }
 
-            ;
         }.start();
     }
 
@@ -188,7 +188,9 @@ public class MainActivity extends Activity {
         try {
             File file = new File(ZongFilePath);
             if (!file.exists()) {
-                file.mkdirs();
+                if (file.mkdirs()){
+                    Log.v(TAG, "创建总文件夹失败");
+                }
                 Log.v(TAG, "创建总文件夹成功");
             } else {
                 Log.v(TAG, "文件夹已存在");
@@ -196,7 +198,9 @@ public class MainActivity extends Activity {
             }
             file = new File(ConfigureFilePath);
             if (!file.exists()) {
-                file.mkdirs();
+                if (file.mkdirs()){
+                    Log.v(TAG, "创建配置文件夹失败");
+                }
                 Log.v(TAG, "创建配置文件夹成功");
             } else {
                 Log.v(TAG, "文件夹已存在");
@@ -204,7 +208,9 @@ public class MainActivity extends Activity {
             }
             file = new File(LogFilePath);
             if (!file.exists()) {
-                file.mkdirs();
+                if (file.mkdirs()){
+                    Log.v(TAG, "创建Log文件夹失败");
+                }
                 Log.v(TAG, "创建Log文件夹成功");
             } else {
                 Log.v(TAG, "文件夹已存在");
@@ -231,7 +237,7 @@ public class MainActivity extends Activity {
             copyfile();
             SharedPreferences.Editor editor = sha.edit();
             editor.putBoolean("isonestart", false);
-            editor.commit();
+            editor.apply();
         }
         getLineMsg(4);// 设置站点信息
         // 接收串口数据服务
@@ -239,6 +245,7 @@ public class MainActivity extends Activity {
         startService(intent);
     }
 
+    @SuppressLint("HandlerLeak")
     public Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -270,12 +277,11 @@ public class MainActivity extends Activity {
             if (lineword.substring(MyApplication.line_util.getLineWord().length() - 1, lineword.length()).equals("路")) {
                 mLineWord.setText(MyApplication.line_util.getLineWord());
             } else {
-                mLineWord.setText(MyApplication.line_util.getLineWord() + "路");
+                mLineWord.setText(String.format("%s路", MyApplication.line_util.getLineWord()));
             }
 
         }
 
-        ;
     };
 
 
@@ -287,7 +293,7 @@ public class MainActivity extends Activity {
             MyApplication.left_listview = new ArrayList<>();
             MyApplication.right_listview = new ArrayList<>();
             MyApplication.centre_listview = new ArrayList<>();
-            List<SiteMsg_Util> list2 = new ArrayList<SiteMsg_Util>();
+            List<SiteMsg_Util> list2 = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
                 if (i < 7) {
                     MyApplication.left_listview.add(list.get(i));

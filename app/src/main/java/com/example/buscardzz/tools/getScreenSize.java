@@ -5,14 +5,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
-/**
- * Created by Administrator on 2017/10/20 0020.
- */
 
 public class getScreenSize {
     public static int getAndroiodScreenProperty(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();
+        assert wm != null;
         wm.getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;         // 屏幕宽度（像素）
         int height = dm.heightPixels;       // 屏幕高度（像素）

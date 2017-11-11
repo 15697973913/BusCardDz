@@ -1,5 +1,6 @@
 package com.example.buscardzz.tools;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -14,15 +15,14 @@ import static com.example.buscardzz.application.MyApplication.db;
 
 
 public class SqliteUtil {
-    public static final String TAG="SqliteUtil";
 
     /**
      * 把线路号存起来
      *
-     * @param db
-     * @param LineWord
-     * @param StationUpLast
-     * @param StationDownLast
+     * @param db 数据库类
+     * @param LineWord 线路号
+     * @param StationUpLast 上行
+     * @param StationDownLast 下行
      */
     public static void insertMsg(SQLiteDatabase db, String LineWord, String StationUpLast, String StationDownLast) {
         db.execSQL("insert into stationline(LineWord,StationUpLast,StationDownLast) values(?,?,?)", new String[]{LineWord, StationUpLast,
@@ -33,7 +33,7 @@ public class SqliteUtil {
     /**
      * 添加上行或者下行数据
      *
-     * @param db
+     * @param db 数据库类
      * @param linetype     up：上行 else 下行
      * @param StationName  站点名
      * @param StationDULNo 线路号
@@ -51,7 +51,7 @@ public class SqliteUtil {
     /**
      * 删除上行或者下行线路
      *
-     * @param db
+     * @param db 数据库类
      * @param linetype up：上行 else 下行
      */
 
@@ -68,7 +68,7 @@ public class SqliteUtil {
     /**
      * 删除线路信息
      *
-     * @param db
+     * @param db 数据库类
      */
     public static void DeleteLineNum(SQLiteDatabase db) {
         String sql = "delete from stationline";
@@ -76,7 +76,7 @@ public class SqliteUtil {
     }
 
     /**
-     * @param db
+     * @param db 数据库类
      * @param id      要修改的id
      * @param context 要修改为的内容
      */
@@ -91,21 +91,21 @@ public class SqliteUtil {
 
     /**
      * 插入服务用语
-     * @param db
-     * @param id
+     * @param db 数据库类
+     * @param id 要插入的id
      * @param context  内容
      */
-    public static void InsertServletMsg(SQLiteDatabase db, String id, String context) {
+    private static void InsertServletMsg(SQLiteDatabase db, String id, String context) {
         db.execSQL("insert into servletmsg(id,context) values(?,?)", new String[]{id,
                 context});
     }
 
     /**
      *  查询服务用语
-     * @param id
-     * @return
+     * @param id 要查询的id
+     * @return 服务用语
      */
-    public static String QueryServletMsg(String id) {
+    private static String QueryServletMsg(String id) {
         Cursor cursor = db.rawQuery("select * from servletmsg where id=?", new String[]{id});
         String msg = "";
         while (cursor.moveToNext()) {
@@ -116,13 +116,13 @@ public class SqliteUtil {
 
     /**
      *  查询所有服务用语
-     * @param db
-     * @return
+     * @param db 数据库类
+     * @return 所有服务用语
      */
     public static List<String> QueryAllServletMsg(SQLiteDatabase db) {
         Log.v("SqliteUtil","QueryAllServletMsg");
-        Cursor cursor = db.rawQuery("select * from servletmsg", null);
-        List<String> list = new ArrayList<String>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("select * from servletmsg", null);
+        List<String> list = new ArrayList<>();
         while (cursor.moveToNext()) {
             list.add(cursor.getString(cursor.getColumnIndex(cursor.getColumnName(1))));
         }
@@ -132,11 +132,12 @@ public class SqliteUtil {
      * 查询上行或者下行数据
      *
      * @param linetype up：上行 else 下行
-     * @param db
-     * @return
+     * @param db 数据库类
+     * @return 线路数据
      */
-    public static List<SiteMsg_Util> queryallLine(SQLiteDatabase db, String linetype) {
-        List<SiteMsg_Util> list = new ArrayList<SiteMsg_Util>();
+    @SuppressLint("Recycle")
+    static List<SiteMsg_Util> queryallLine(SQLiteDatabase db, String linetype) {
+        List<SiteMsg_Util> list = new ArrayList<>();
         Cursor cursor;
         if (linetype.equals("up")) {
             cursor = db.rawQuery("select * from stationlines", null);
@@ -160,12 +161,12 @@ public class SqliteUtil {
 
     /**
      *  查询线路
-     * @param db
-     * @return
+     * @param db 数据库类
+     * @return 线路
      */
-    public static LineMsg_Util queryLine(SQLiteDatabase db) {
+    static LineMsg_Util queryLine(SQLiteDatabase db) {
         LineMsg_Util util = new LineMsg_Util();
-        Cursor cursor = db.rawQuery("select * from stationline", null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("select * from stationline", null);
         while (cursor.moveToNext()) {
             util = new LineMsg_Util();
             util.setLineWord(cursor.getString(cursor.getColumnIndex(cursor.getColumnName(1))));

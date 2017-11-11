@@ -1,5 +1,6 @@
 package com.example.buscardzz.application;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MyApplication extends Application {
@@ -43,8 +45,8 @@ public class MyApplication extends Application {
     // 右边list显示的
     public static List<SiteMsg_Util> right_listview = new ArrayList<>();
 
-    private MyUncaughtExceptionHandler uncaughtExceptionHandler;
     private String packgeName;
+    @SuppressLint("StaticFieldLeak")
     public static Context context;
     public static SQLiteDatabase db;
     public static MySqlHelper helper;
@@ -94,7 +96,7 @@ public class MyApplication extends Application {
         // 参数1：包名，参数2：程序入口的activity
         intent.setClassName(packgeName, packgeName + ".LoginActivity");
         // 程序崩溃时触发线程
-        uncaughtExceptionHandler = new MyUncaughtExceptionHandler();
+        MyUncaughtExceptionHandler uncaughtExceptionHandler = new MyUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
     }
 
@@ -119,7 +121,7 @@ public class MyApplication extends Application {
      *
      * @return 返回文件名称
      */
-    private String saveCatchInfo2File(Throwable ex) {
+    private void saveCatchInfo2File(Throwable ex) {
         Writer writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);
         ex.printStackTrace(printWriter);
@@ -131,7 +133,7 @@ public class MyApplication extends Application {
         printWriter.close();
         String sb = writer.toString();
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.CHINA);
             String time = formatter.format(new Date());
             String fileName = time + ".txt";
             System.out.println("fileName:" + fileName);
@@ -142,7 +144,7 @@ public class MyApplication extends Application {
                     if (!dir.mkdirs()) {
                         Log.v(TAG,"目录创建失败:"+filePath);
                         // 创建目录失败: 一般是因为SD卡被拔出了
-                        return "";
+                        return;
                     }
                 }
                 System.out.println("filePath + fileName:" + filePath + fileName);
@@ -150,11 +152,9 @@ public class MyApplication extends Application {
                 fos.write(sb.getBytes());
                 fos.close();
                 // 文件保存完了之后,在应用下次启动的时候去检查错误日志,发现新的错误日志,就发送给开发者
-            return fileName;
         } catch (Exception e) {
             System.out.println("an error occured while writing file..." + e.getMessage());
         }
-        return null;
     }
 
 

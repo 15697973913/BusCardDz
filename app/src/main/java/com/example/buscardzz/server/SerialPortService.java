@@ -21,11 +21,12 @@ import android_serialport_api.SerialPort;
 
 public class SerialPortService extends Service {
     protected SerialPort mSerialPort;
-    protected OutputStream mOutputStream;
+    public static OutputStream mOutputStream;
     private InputStream mInputStream;
-    private ReadThread mReadThread;
-    private String TAG = "SerialPortService";
+    protected ReadThread mReadThread;
+    public static final String TAG = "SerialPortService";
     public String strResponse = "";
+    public static Myhandler Myhandler=new Myhandler();
 
     private class ReadThread extends Thread {
 
@@ -39,9 +40,7 @@ public class SerialPortService extends Service {
                         return;
                     size = mInputStream.read(buffer);
                     byte[] bRec = new byte[size];
-                    for (int i = 0; i < size; i++) {
-                        bRec[i] = buffer[i];
-                    }
+                    System.arraycopy(buffer, 0, bRec, 0, size);
                     // 截取1E与1F中间的字符
                     if (size > 0) {
                         String getmsg = MyFunc.ByteArrToHex(bRec);
@@ -63,9 +62,7 @@ public class SerialPortService extends Service {
     public void getmsg(String str) {
         strResponse += str;
         Log.v(TAG, "strResponse：" + strResponse);
-        if (strResponse.length() < 25) {
-            return;
-        } else {
+        if (!(strResponse.length() < 25)) {
             int btindex = strResponse.indexOf("1E60");
             // 如果没有1E60就是潍坊协议
             if (btindex == -1) {
@@ -73,7 +70,7 @@ public class SerialPortService extends Service {
                 int wfbtindex = strResponse.indexOf("7E");
                 Log.v(TAG, "7E的位置是：" + wfbtindex);
                 // 截取"7E"后面的数据
-                if (strResponse.indexOf("7E") == -1) {
+                if (!strResponse.contains("7E")) {
                     strResponse = "";
                     return;
                 }
@@ -90,7 +87,7 @@ public class SerialPortService extends Service {
                 int wfsjzcd = MyFunc.HexToInt(strResponse.substring(10, 14));
 //				Log.v(TAG, "信息帧长度:" + strResponse.substring(10, 14) + "   " + MyFunc.HexToInt(strResponse.substring(10, 14)));
                 if (wfsjzcd > 3000) {
-                    if (strResponse.indexOf("7F7E") != -1) {
+                    if (strResponse.contains("7F7E")) {
                         strResponse = strResponse.substring(strResponse.indexOf("7F7E") + 2, strResponse.length());
                         return;
                     } else {
@@ -115,7 +112,7 @@ public class SerialPortService extends Service {
                             Message message = new Message();
                             message.obj = strResponse.substring(2, strResponse.length());
                             message.what = 0x1313;
-                            handler.sendMessage(message);
+                            Myhandler.sendMessage(message);
                         }
                         strResponse = "";
                         return;
@@ -137,15 +134,11 @@ public class SerialPortService extends Service {
                             Message message = new Message();
                             message.obj = aa.substring(2, aa.length());
                             message.what = 0x1313;
-                            handler.sendMessage(message);
+                            Myhandler.sendMessage(message);
                         }
                         return;
                     }
                 }
-            }
-            if (btindex == -1) {
-                strResponse = "";
-                return;
             }
             strResponse = strResponse.substring(btindex, strResponse.length());
             btindex = strResponse.indexOf("1E60");
@@ -177,10 +170,9 @@ public class SerialPortService extends Service {
                     Message message = new Message();
                     message.obj = strResponse.substring(4, strResponse.length());
                     message.what = 0x1313;
-                    handler.sendMessage(message);
+                    Myhandler.sendMessage(message);
                 }
                 strResponse = "";
-                return;
             } else {
                 // 如果不是就截取对应长度，保留后面的数据
                 String aa = strResponse.substring(0, (sjzcd + 10) * 2);
@@ -198,9 +190,8 @@ public class SerialPortService extends Service {
                     Message message = new Message();
                     message.obj = aa.substring(4, aa.length());
                     message.what = 0x1313;
-                    handler.sendMessage(message);
+                    Myhandler.sendMessage(message);
                 }
-                return;
             }
         }
     }
@@ -215,7 +206,6 @@ public class SerialPortService extends Service {
         Log.v(TAG, "校验前数据为：" + str);
         int jiaoyan = MyFunc.HexToInt(str.substring(str.length() - 4, str.length() - 2));
         int yhzhi = Integer.parseInt(str.substring(0, 2), 16);
-        ;
         for (int i = 2; i < str.length() - 4; i += 2) {
             int bb = Integer.parseInt(str.substring(i, i + 2), 16);
             yhzhi = yhzhi ^ bb;
@@ -228,8 +218,80 @@ public class SerialPortService extends Service {
         }
     }
 
-    Handler handler = new Handler() {
+
+
+    /**
+     * @param sjz 要校验的数据
+     * @return 获得的校验位
+     */
+    public static String getjyw(String sjz) {
+        int yhzhi = Integer.parseInt(sjz.substring(0, 2), 16);
+        for (int i = 2; i < sjz.length(); i += 2) {
+            int bb = Integer.parseInt(sjz.substring(i, i + 2), 16);
+            yhzhi = yhzhi ^ bb;
+        }
+        Log.v(TAG, "校验位：" + Integer.toHexString(yhzhi));
+        return Integer.toHexString(yhzhi);
+    }
+
+    public static int getxxz(String msg, String str) {
+        int xh = msg.indexOf(str) + 2;
+        int xhleng = MyFunc.HexToInt(msg.substring(xh, xh + 4));
+        return MyFunc.HexToInt(msg.substring(xh + 4, xh + 4 + (xhleng * 2)));
+    }
+
+    public static String getleng(String msg, int a) {
+        String str = msg;
+        for (int i = 2; i < a; i++) {
+            int xh = str.indexOf("0" + i) + 2;
+            int xhleng = MyFunc.HexToInt(str.substring(xh, xh + 4));
+            str = str.substring(xh + 6 + xhleng - 1, str.length());
+        }
+        return str;
+    }
+
+    public static String getleng1(String msg) {
+        String str;
+        int xhleng = MyFunc.HexToInt(msg.substring(2, 4));
+        str = msg.substring(2 + 4 + xhleng * 2, msg.length());
+        return str;
+    }
+
+    public static String getxxz1(String msg) {
+        int xhleng = MyFunc.HexToInt(msg.substring(2, 4));
+        return MyFunc.HexStringTOString(msg.substring(4, 4 + (xhleng * 2)));
+    }
+
+    public void onCreate() {
+        super.onCreate();
+        try {
+            mSerialPort = new SerialPort(new File(MyApplication.device), MyApplication.baudrate, 0);
+            mOutputStream = mSerialPort.getOutputStream();
+            mInputStream = mSerialPort.getInputStream();
+            mReadThread = new ReadThread();
+            mReadThread.start();
+        } catch (Exception ignored) {
+        }
+    }
+
+    public static void sendHex(String sHex) {
+        byte[] bOutArray = MyFunc.HexToByteArr(sHex);
+        try {
+            mOutputStream.write(bOutArray);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+     static class Myhandler extends Handler{
+        @Override
         public void handleMessage(Message msg) {
+            super.handleMessage(msg);
             switch (msg.what) {
                 case 0x1313:
                     try {
@@ -395,7 +457,9 @@ public class SerialPortService extends Service {
                                     String xx = cshmsg.substring(0, 2);
                                     if (xx.equals("00")) {
                                         if (MainActivity.fwyyfile.exists()) {
-                                            MainActivity.fwyyfile.delete();
+                                            if (MainActivity.fwyyfile.delete()){
+                                                Log.v(TAG,"删除失败");
+                                            }
                                         }
                                     }
                                     SqliteUtil.UpdateServletMsg(MyApplication.db, xx + "", strfwyy);
@@ -410,7 +474,9 @@ public class SerialPortService extends Service {
                                         String fwyy = MyFunc.HexStringTOString(cshmsg.substring(6, 6 + len * 2));
                                         if (xh == 1) {
                                             if (MainActivity.fwyyfile.exists()) {
-                                                MainActivity.fwyyfile.delete();
+                                                if (MainActivity.fwyyfile.delete()){
+                                                    Log.v(TAG,"删除失败");
+                                                }
                                             }
                                         }
                                         SqliteUtil.UpdateServletMsg(MyApplication.db, xh + "", fwyy);
@@ -443,7 +509,6 @@ public class SerialPortService extends Service {
                                 int wfzdzcd = MyFunc.HexToInt(sjzmsg.substring(2, 6));
                                 String wfzdz = MyFunc.HexStringTOString(sjzmsg.substring(6, 6 + wfzdzcd * 2));
                                 Log.v(TAG, "终点Hex：" + sjzmsg.substring(6, 6 + wfzdzcd * 2));
-                                sjzmsg = sjzmsg.substring(6 + wfzdzcd * 2, sjzmsg.length());
 
                                 Log.v(TAG, "线路号：" + xlh + "  起点：" + wfqdz + "  终点:" + wfzdz);
                                 SqliteUtil.DeleteLineNum(MyApplication.db);
@@ -459,79 +524,5 @@ public class SerialPortService extends Service {
                     break;
             }
         }
-
-        ;
-    };
-
-
-    /**
-     * @param sjz 要校验的数据
-     * @return 获得的校验位
-     */
-    public String getjyw(String sjz) {
-        int yhzhi = Integer.parseInt(sjz.substring(0, 2), 16);
-        for (int i = 2; i < sjz.length(); i += 2) {
-            int bb = Integer.parseInt(sjz.substring(i, i + 2), 16);
-            yhzhi = yhzhi ^ bb;
-        }
-        Log.v(TAG, "校验位：" + Integer.toHexString(yhzhi));
-        return Integer.toHexString(yhzhi);
     }
-
-    public int getxxz(String msg, String str) {
-        int xh = msg.indexOf(str) + 2;
-        int xhleng = MyFunc.HexToInt(msg.substring(xh, xh + 4));
-        int a = MyFunc.HexToInt(msg.substring(xh + 4, xh + 4 + (xhleng * 2)));
-        return a;
-    }
-
-    public String getleng(String msg, int a) {
-        String str = msg;
-        for (int i = 2; i < a; i++) {
-            int xh = str.indexOf("0" + i) + 2;
-            int xhleng = MyFunc.HexToInt(str.substring(xh, xh + 4));
-            str = str.substring(xh + 6 + xhleng - 1, str.length());
-        }
-        return str;
-    }
-
-    public String getleng1(String msg) {
-        String str = msg;
-        int xhleng = MyFunc.HexToInt(msg.substring(2, 4));
-        str = msg.substring(2 + 4 + xhleng * 2, msg.length());
-        return str;
-    }
-
-    public String getxxz1(String msg) {
-        int xhleng = MyFunc.HexToInt(msg.substring(2, 4));
-        String a = MyFunc.HexStringTOString(msg.substring(4, 4 + (xhleng * 2)));
-        return a;
-    }
-
-    public void onCreate() {
-        super.onCreate();
-        try {
-            mSerialPort = new SerialPort(new File(MyApplication.device), MyApplication.baudrate, 0);
-            mOutputStream = mSerialPort.getOutputStream();
-            mInputStream = mSerialPort.getInputStream();
-            mReadThread = new ReadThread();
-            mReadThread.start();
-        } catch (Exception e) {
-        }
-    }
-
-    public void sendHex(String sHex) {
-        byte[] bOutArray = MyFunc.HexToByteArr(sHex);
-        try {
-            mOutputStream.write(bOutArray);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
 }

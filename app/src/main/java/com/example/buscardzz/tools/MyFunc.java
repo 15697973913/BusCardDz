@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 public class MyFunc {
 	// -------------------------------------------------------
 	// 判断奇数或偶数，位运算，最后一位是1则为奇数，为0是偶数
-	static public int isOdd(int num) {
+	private static int isOdd(int num) {
 		return num & 0x1;
 	}
 
@@ -19,13 +19,13 @@ public class MyFunc {
 	}
 
 	// -------------------------------------------------------
-	static public byte HexToByte(String inHex)// Hex字符串转byte
+	private static byte HexToByte(String inHex)// Hex字符串转byte
 	{
 		return (byte) Integer.parseInt(inHex, 16);
 	}
 
 	// -------------------------------------------------------
-	static public String Byte2Hex(Byte inByte)// 1字节转2个Hex字符
+	private static String Byte2Hex(Byte inByte)// 1字节转2个Hex字符
 	{
 		return String.format("%02x", inByte).toUpperCase();
 	}
@@ -34,9 +34,8 @@ public class MyFunc {
 	static public String ByteArrToHex(byte[] inBytArr)// 字节数组转转hex字符串
 	{
 		StringBuilder strBuilder = new StringBuilder();
-		int j = inBytArr.length;
-		for (int i = 0; i < j; i++) {
-			strBuilder.append(Byte2Hex(inBytArr[i]));
+		for (byte anInBytArr : inBytArr) {
+			strBuilder.append(Byte2Hex(anInBytArr));
 			// strBuilder.append(" ");
 		}
 		return strBuilder.toString();
@@ -46,8 +45,7 @@ public class MyFunc {
 	static public String ByteArrToHex(byte[] inBytArr, int offset, int byteCount)// 字节数组转转hex字符串，可选长度
 	{
 		StringBuilder strBuilder = new StringBuilder();
-		int j = byteCount;
-		for (int i = offset; i < j; i++) {
+		for (int i = offset; i < byteCount; i++) {
 			strBuilder.append(Byte2Hex(inBytArr[i]));
 		}
 		return strBuilder.toString();
@@ -75,7 +73,7 @@ public class MyFunc {
 	}
 
 	// String转String数组
-	public static String[] StringToByte(String str) {
+	private static String[] StringToByte(String str) {
 		String[] strarr = new String[str.length() / 2];
 		for (int i = 0; i < strarr.length; i++) {
 			strarr[i] = str.substring(i * 2, i * 2 + 2);
@@ -96,7 +94,7 @@ public class MyFunc {
 	}
 
 	// String数组转byte数组
-	public static byte[] StringarrToBytearr(String strarr[]) {
+	private static byte[] StringarrToBytearr(String strarr[]) {
 		byte[] bytearr = new byte[strarr.length];
 		for (int i = 0; i < bytearr.length; i++) {
 			bytearr[i] = MyFunc.HexToByte(strarr[i]);

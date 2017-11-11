@@ -12,7 +12,6 @@ public class MyTextView extends TextView {
 
 
     private Paint textPaint;
-    private float textH1;
     private float myPadding;
 
     public MyTextView(Context context) {
@@ -42,12 +41,12 @@ public class MyTextView extends TextView {
         float a = textPaint.ascent();
         float d = textPaint.descent();
         float textH = d - a+4;
-        textH1 = -a;//基线
+        float textH1 = -a;
         if (getHeight() - textH * text.length() > 0&&text.length()>1) {
             myPadding = (getHeight() - textH * text.length()) / (text.length()-1);
         }
         for (int i=0;i<text.length();i++) {
-            canvas.drawText(text.substring(i,i+1),startX,textH1+i*(textH+myPadding),textPaint);
+            canvas.drawText(text.substring(i,i+1),startX, textH1 +i*(textH+myPadding),textPaint);
         }
     }
 }

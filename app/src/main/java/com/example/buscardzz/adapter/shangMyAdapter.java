@@ -1,5 +1,6 @@
 package com.example.buscardzz.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
@@ -20,13 +21,10 @@ import java.util.List;
 
 
 public class shangMyAdapter extends BaseAdapter {
-    private List<SiteMsg_Util> list = new ArrayList<SiteMsg_Util>();
+    private List<SiteMsg_Util> list = new ArrayList<>();
     private LayoutInflater inflater;
     private Context context;
     private int index;
-    private MyTextView zdname, zdname1;
-    private ImageView img;
-    private FrameLayout layout;
     private ImageView dqimg;
     private int isdz;
     private boolean isdayu40;
@@ -58,13 +56,14 @@ public class shangMyAdapter extends BaseAdapter {
         return arg0;
     }
 
+    @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
     public View getView(int arg0, View view, ViewGroup arg2) {
         view = inflater.inflate(R.layout.shanghuangse_item, null);
-        zdname = view.findViewById(R.id.shhs_name);
-        zdname1 = view.findViewById(R.id.shhs_name1);
-        img = view.findViewById(R.id.stype_img);
-        layout = view.findViewById(R.id.szdbuju);
+        MyTextView zdname = view.findViewById(R.id.shhs_name);
+        MyTextView zdname1 = view.findViewById(R.id.shhs_name1);
+        ImageView img = view.findViewById(R.id.stype_img);
+        FrameLayout layout = view.findViewById(R.id.szdbuju);
         LayoutParams lp;
         lp = (LayoutParams) layout.getLayoutParams();
         int dp1=context.getResources().getDimensionPixelOffset(R.dimen.dp_1850);
@@ -295,7 +294,8 @@ public class shangMyAdapter extends BaseAdapter {
         return view;
     }
 
-    Handler handler = new Handler() {
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case 0x4141:

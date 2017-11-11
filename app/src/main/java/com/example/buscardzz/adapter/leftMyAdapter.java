@@ -1,5 +1,6 @@
 package com.example.buscardzz.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
@@ -22,13 +23,10 @@ import java.util.List;
 
 
 public class leftMyAdapter extends BaseAdapter {
-	private List<SiteMsg_Util> list = new ArrayList<SiteMsg_Util>();
+	private List<SiteMsg_Util> list = new ArrayList<>();
 	private LayoutInflater inflater;
 	private Context context;
 	private int index;
-	private AlignTextView zdname, zdname1;
-	private ImageView img;
-	private FrameLayout layout;
 	private ImageView dqimg;
 	private int isdz;
 
@@ -57,13 +55,14 @@ public class leftMyAdapter extends BaseAdapter {
 		return arg0;
 	}
 
+	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(int arg0, View view, ViewGroup arg2) {
 		view = inflater.inflate(R.layout.left_list_item, null);
-		zdname = view.findViewById(R.id.left_name);
-		zdname1 = view.findViewById(R.id.left_name1);
-		img = view.findViewById(R.id.left_stype_img);
-		layout = view.findViewById(R.id.left_szdbuju);
+		AlignTextView zdname = view.findViewById(R.id.left_name);
+		AlignTextView zdname1 = view.findViewById(R.id.left_name1);
+		ImageView img = view.findViewById(R.id.left_stype_img);
+		FrameLayout layout = view.findViewById(R.id.left_szdbuju);
 		LayoutParams lp;
 		lp = (LayoutParams) layout.getLayoutParams();
 		lp.height = context.getResources().getDimensionPixelOffset(R.dimen.dp_355) / list.size();
@@ -188,6 +187,7 @@ public class leftMyAdapter extends BaseAdapter {
 		return view;
 	}
 
+	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {

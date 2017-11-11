@@ -1,5 +1,6 @@
 package com.example.buscardzz.tools;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -17,16 +18,12 @@ import com.example.buscardzz.R;
  * Created by cxw on 2015/12/28.
  */
 public class AlignTextView extends TextView {
-    private static final String TAG = "AlignTextView";
     private static final int SUFFIXMODE_FULL_WIDTH = 1;
     private static final int SUFFIXMODE_HALF_WIDTH = 2;
-    private Context context;
     /**文字*/
     private String text;
     /**后缀符号全角或半角*/
     private int suffixMode;
-    /**后缀*/
-    private String suffixStr;
 
     public AlignTextView(Context context) {
         this(context, null);
@@ -38,7 +35,6 @@ public class AlignTextView extends TextView {
 
     public AlignTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context=context;
 
         TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.AlignTextView);
         text= typedArray.getString(R.styleable.AlignTextView_text);
@@ -47,12 +43,12 @@ public class AlignTextView extends TextView {
     }
     @Override
     protected void onDraw(Canvas canvas) {
-        Paint paint=new Paint();
+        @SuppressLint("DrawAllocation") Paint paint=new Paint();
         paint.setAntiAlias(true);
         paint.setTextSize(getTextSize());
         paint.setColor(getTextColors().getDefaultColor());
 
-        Rect targetRect = new Rect(0,0,getWidth(),getHeight());
+        @SuppressLint("DrawAllocation") Rect targetRect = new Rect(0,0,getWidth(),getHeight());
 
         Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
         int baseline = (targetRect.bottom + targetRect.top - fontMetrics.bottom - fontMetrics.top) / 2;
@@ -77,9 +73,10 @@ public class AlignTextView extends TextView {
             //情况二:有后缀
         }else{
             //后缀字符
-            suffixStr=text.substring(text.length() - 1, text.length());
+            /*后缀*/
+            String suffixStr = text.substring(text.length() - 1, text.length());
             //后缀宽度
-            int suffixWidth=getSuffixWidth(paint,suffixStr,suffixMode);
+            int suffixWidth=getSuffixWidth(paint, suffixStr,suffixMode);
             char[] chars = text.substring(0,text.length() - 1).toCharArray();
             int spec= (int) ((maxTextViewWidth-chars.length*textPx-suffixWidth)/(chars.length));
             for (int i = 0; i < chars.length; i++) {
@@ -92,10 +89,10 @@ public class AlignTextView extends TextView {
 
     /**
      * 计算后缀的宽度
-     * @param paint
-     * @param suffixStr
-     * @param suffixMode
-     * @return
+     * @param paint  画笔
+     * @param suffixStr 文字
+     * @param suffixMode 容器
+     * @return int
      */
     private int getSuffixWidth(Paint paint,String suffixStr,int suffixMode){
         if(TextUtils.isEmpty(suffixStr) || suffixMode==0){

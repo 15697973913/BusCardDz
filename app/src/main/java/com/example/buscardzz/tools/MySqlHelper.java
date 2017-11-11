@@ -9,22 +9,6 @@ public class MySqlHelper extends SQLiteOpenHelper {
     /**
      * 书籍类型表: booktype id typename：类型
      */
-    /**
-     * 线路号表
-     */
-    private String sql1 = "create table stationline(id integer primary key autoincrement,LineWord,StationUpLast,StationDownLast)";
-    /**
-     * 上行线路
-     */
-    private String sql2 = "create table stationlines(id integer primary key autoincrement,StationName,StationDULNo)";
-    /**
-     * 下行线路
-     */
-    private String sql3 = "create table stationlinex(id integer primary key autoincrement,StationName,StationDULNo)";
-    /**
-     * 服务用语
-     */
-    private String sql4 = "create table servletmsg(id,context)";
 
     public MySqlHelper(Context context, String name, CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -32,9 +16,25 @@ public class MySqlHelper extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
+        /*
+      线路号表
+     */
+        String sql1 = "create table stationline(id integer primary key autoincrement,LineWord,StationUpLast,StationDownLast)";
         db.execSQL(sql1);
+        /*
+      上行线路
+     */
+        String sql2 = "create table stationlines(id integer primary key autoincrement,StationName,StationDULNo)";
         db.execSQL(sql2);
+        /*
+      下行线路
+     */
+        String sql3 = "create table stationlinex(id integer primary key autoincrement,StationName,StationDULNo)";
         db.execSQL(sql3);
+        /*
+      服务用语
+     */
+        String sql4 = "create table servletmsg(id,context)";
         db.execSQL(sql4);
     }
 
